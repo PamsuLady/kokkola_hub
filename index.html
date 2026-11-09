@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kokkola Hub - Ravintolat & Tapahtumat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Näkymänvaihto (Päivitetty siistiksi) -->
+<div class="navigaatio-palkki">
+    <button id="nappi-palaa" class="nav-nappi piilossa">← Palaa päänäkymään</button>
+    <button id="nappi-ravintola" class="nav-nappi piilossa">Ravintolapaneeli</button>
+    <button id="nappi-auth" class="nav-nappi">🔒</button>
+    <button id="nappi-ulos" class="nav-nappi piilossa">🚪</button>
+    <button id="nappi-teema" class="nav-nappi">🌙</button>
+</div>
+
+
+    <!-- Asiakasnäkymä -->
+    <div id="asiakas-osio">
+        <div class="ylapalkki">
+            <header>
+                <h1>Kokkola Hub</h1>
+                <p class="header-kuvaus">Löydä paikalliset ravintolatarjoukset, lounaat ja tapahtumat yhdestä paikasta.</p>
+            </header>
+
+            <div class="suodatin-alue">
+                <button class="suodatin-nappi aktiivinen" data-filter="kaikki">Kaikki</button>
+                <button class="suodatin-nappi" data-filter="lounas">Lounaat</button>
+                <button class="suodatin-nappi" data-filter="tapahtuma">Tapahtumat</button>
+                <button class="suodatin-nappi" data-filter="etu">Edut & Kupongit</button>
+            </div>
+        </div>
+
+        <main id="mainos-grid" class="mainos-grid">
+            <!-- JavaScript täyttää -->
+        </main>
+    </div>
+
+        <!-- KIRJAUTUMIS- JA REKISTERÖITYMISNÄKYMÄ (Päivitetty paluupainikkeella) -->
+    <div id="auth-osio" class="piilossa">
+        <div class="paneeli-kontti">
+            <h2>Kirjaudu sisään ravintolatunnuksilla</h2>
+            <form id="kirjautumis-lomake">
+                <div class="lomake-ryhma">
+                    <label for="auth-tunnus">Käyttäjätunnus</label>
+                    <input type="text" id="auth-tunnus" required>
+                </div>
+                <div class="lomake-ryhma">
+                    <label for="auth-salasana">Salasana</label>
+                    <input type="password" id="auth-salasana" required>
+                </div>
+                <button type="submit" class="julkaise-nappi">Kirjaudu</button>
+            </form>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <h3>Ei vielä tunnusta? Rekisteröidy käyttäjäksi:</h3>
+            <button id="nappi-rekisteroidy" class="nav-nappi" style="width: 100%; padding: 12px; margin-bottom: 15px;">Luo uusi ravintolatunnus</button>
+            
+            <!-- LISÄTTY PALUUPAINIKE LOMAKKEEN POHJALLE -->
+            <button id="loman-peruuta-auth" class="julkaise-nappi" style="background-color: #6c757d;">Palaa takaisin asiakasnäkymään</button>
+        </div>
+    </div>
+
+
+    <!-- RAVINTOLAPANEELI -->
+    <div id="ravintola-osio" class="piilossa">
+        <div class="paneeli-kontti">
+            <h2>Ravintolapaneeli</h2>
+            <p>Lisää uusi mainos, etu tai tapahtuma Kokkola Hubiin.</p>
+            
+            <form id="lisaa-mainos-lomake">
+                <div class="lomake-ryhma">
+                    <label for="lomake-ravintola">Ravintolan nimi</label>
+                    <input type="text" id="lomake-ravintola" required placeholder="Esim. Smokey Road">
+                </div>
+                
+                <div class="lomake-ryhma">
+                    <label for="lomake-kategoria">Kategoria</label>
+                    <select id="lomake-kategoria" required>
+                        <option value="lounas">Lounas</option>
+                        <option value="tapahtuma">Tapahtuma</option>
+                        <option value="etu">Etu & Kuponki</option>
+                    </select>
+                </div>
+                
+                <div class="lomake-ryhma">
+                    <label for="lomake-otsikko">Mainoksen otsikko</label>
+                    <input type="text" id="lomake-otsikko" required placeholder="Esim. Live-musiikkia perjantaina">
+                </div>
+                
+                <div class="lomake-ryhma">
+                    <label for="lomake-kuvaus">Kuvausteksti</label>
+                    <textarea id="lomake-kuvaus" required placeholder="Kirjoita tähän tarkemmat tiedot tarjouksesta..."></textarea>
+                </div>
+                
+                <div class="lomake-ryhma">
+                    <label for="lomake-pvm">Ajankohta / Voimassaolo</label>
+                    <input type="text" id="lomake-pvm" required placeholder="Esim. Pe 13.11. klo 20:00 tai Voimassa marraskuun loppuun">
+                </div>
+                
+                <div class="lomake-ryhma">
+                    <label for="lomake-kuvatiedosto">Lataa kuva tiedostoista (valinnainen)</label>
+                    <input type="file" id="lomake-kuvatiedosto" accept="image/*">
+                </div>
+
+                <div class="lomake-ryhma">
+                    <label for="lomake-nettisivut">Yrityksen oma verkkosivusto (valinnainen)</label>
+                    <input type="text" id="lomake-nettisivut" placeholder="Esim. https://ravintolannimi.fi">
+                </div>
+                
+                <div class="lomake-rivi">
+                    <input type="checkbox" id="lomake-suositeltu">
+                    <label for="lomake-suositeltu">Merkitse suositelluksi nostoksi (kultainen reunus)</label>
+                </div>
+                
+                <button type="submit" class="julkaise-nappi">Julkaise ilmoitus</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

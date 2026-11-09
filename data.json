@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "ravintola": "Smokey Road",
+    "kategoria": "etu",
+    "otsikko": "Opiskelija-alennus burgereista",
+    "kuvaus": "Kaikki burgeriateriat -15% voimassa olevalla opiskelijakortilla ma-to klo 14 jälkeen.",
+    "kuvaUrl": "https://unsplash.com",
+    "pvm": "Voimassa toistaiseksi",
+    "suositeltu": true
+  },
+  {
+    "id": 2,
+    "ravintola": "Ravintola Nera",
+    "kategoria": "tapahtuma",
+    "otsikko": "Live-jazz & Viini-ilta",
+    "kuvaus": "Paikalliset muusikot viihdyttävät lauantai-iltana. Pöytävaraukset suositeltavia.",
+    "kuvaUrl": "https://unsplash.com",
+    "pvm": "La 21.11. klo 19:00",
+    "suositeltu": true
+  },
+  {
+    "id": 3,
+    "ravintola": "Ravintola Madez",
+    "kategoria": "lounas",
+    "otsikko": "Viikon lounaslista päivitetty",
+    "kuvaus": "Tämän viikon lounasvaihtoehdoissa muun muassa pariloitua lohta ja talon suosittu butter chicken.",
+    "kuvaUrl": "https://unsplash.com",
+    "pvm": "Ma-Pe klo 11:00-14:00",
+    "suositeltu": false
+  },
+  {
+    "id": 4,
+    "ravintola": "Singh's Flavique",
+    "kategoria": "etu",
+    "otsikko": "Takeaway-tarjous",
+    "kuvaus": "Kaikki suoraan ravintolasta noudetut ala carte -annokset -10% koodilla KOKKOLA10.",
+    "kuvaUrl": "https://unsplash.com",
+    "pvm": "Voimassa tämän kuun loppuun",
+    "suositeltu": false
+  }
+]

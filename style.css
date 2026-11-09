@@ -1,0 +1,478 @@
+/* ==========================================================================
+   1. PERUSASETUKSET JA VÄRIT (MUKAUTUVA TEEMA)
+   ========================================================================== */
+:root {
+    /* Vaalean teeman oletusvärit */
+    --taustavari: #f8f9fa;       /* Kevyt vaaleanharmaa tausta koko sivulle */
+    --korttitausta: #ffffff;     /* Puhdas valkoinen korteille */
+    --tekstivari: #212529;       /* Tummanharmaa teksti */
+    --paavari: #0d6efd;          /* Kokkolan sininen korostusväri / aktiiviset napit */
+    --suositeltu-reunus: #ffc107; /* Keltainen/Kulta suositelluille nostoille */
+    --reunavari: #dee2e6;        /* Väri korteiden ja yläpalkin viivoille */
+    --korttiteksti: #495057;     /* Väri leipäteksteille */
+    
+    /* Tagien värit eri kategorioille (pysyvät samoina molemmissa teemoissa) */
+    --lounas-vari: #198754;      /* Vihreä */
+    --tapahtuma-vari: #dc3545;    /* Punainen */
+    --etu-vari: #6f42c1;          /* Liila */
+}
+
+/* Tumman teeman värit – aktivoituvat data-theme -asetuksesta */
+:root[data-theme="dark"] {
+    --taustavari: #121212;       /* Erittäin tummanharmaa tausta */
+    --korttitausta: #1e1e1e;     /* Hieman vaaleampi tumma korteille */
+    --tekstivari: #f8f9fa;       /* Lähes valkoinen teksti */
+    --paavari: #398bfd;          /* Hieman kirkkaampi sininen tummalle pohjalle */
+    --reunavari: #333333;        /* Tummat väriviivat */
+    --korttiteksti: #ced4da;     /* Vaaleampi teksti tummille korteille */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--taustavari);
+    color: var(--tekstivari);
+    line-height: 1.6;
+    padding: 20px;
+    /* Pehmeä häivytys taustan ja tekstien vaihdolle teemaa vaihtaessa */
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+/* ==========================================================================
+   2. KIINNITETTY YLÄPALKKI (STICKY HEADER)
+   ========================================================================== */
+.ylapalkki {
+    position: -webkit-sticky; /* Tukee vanhempia Safari-selaimia */
+    position: sticky;         /* Pakottaa elementin tarrautumaan kiinni rullatessa */
+    top: 0;                   /* Tarrautuu aivan ruudun yläreunaan */
+    z-index: 1000;            /* Pitää yläpalkin aina muiden korttien päällä */
+    background-color: var(--taustavari); /* Estää kortteja näkymästä läpi rullatessa */
+    padding-top: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--reunavari); 
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--paavari);
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+header p {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* ==========================================================================
+   3. NAVIGAATIO JA SUODATUSPAINIKKEET (Flexbox)
+   ========================================================================== */
+.navigaatio-palkki {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.nav-nappi {
+    background-color: #e9ecef;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+/* Vaihdetaan navigaationappien tausta teeman mukaan sopivaksi */
+:root[data-theme="dark"] .nav-nappi {
+    background-color: #2a2a2a;
+    color: #ced4da;
+}
+
+.nav-nappi.aktiivinen {
+    background-color: #212529;
+    color: #ffffff;
+}
+
+:root[data-theme="dark"] .nav-nappi.aktiivinen {
+    background-color: #f8f9fa;
+    color: #121212;
+}
+
+.suodatin-alue {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    flex-wrap: wrap; /* Rivittää napit siististi mobiilissa */
+}
+
+.suodatin-nappi {
+    background-color: transparent;
+    border: 2px solid var(--paavari);
+    color: var(--paavari);
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.suodatin-nappi:hover, 
+.suodatin-nappi.aktiivinen {
+    background-color: var(--paavari);
+    color: #ffffff;
+}
+
+/* Yleisluokka osioiden piilottamiseen */
+.piilossa {
+    display: none !important;
+}
+
+/* ==========================================================================
+   4. MAINOS-GRID (CSS Grid)
+   ========================================================================== */
+.mainos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Responsiivinen sarakemäärä */
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   5. KORTTIEN TYYLIT (Työpöytänäkymä)
+   ========================================================================== */
+.kortti {
+    background-color: var(--korttitausta);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    min-height: 580px; /* Pakotetaan kortit riittävän korkeiksi */
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.kortti:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="dark"] .kortti {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Tummempi varjo pimeässä tilassa */
+}
+
+/* KULTAINEN SUOSITELTU NOSTO */
+.suidettu.suositeltu-nosto,
+.kortti.suositeltu-nosto {
+    border: 2px solid var(--suositeltu-reunus); /* Kultainen 2px paksu reunus */
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.1); /* Kevyt kultainen hohde kortin alle */
+}
+
+/* Hienosäädetään suositellun kortin hover-efektiä, jotta se hohtaa hieman enemmän nostettaessa */
+.kortti.suositeltu-nosto:hover {
+    box-shadow: 0 12px 24px rgba(255, 193, 7, 0.2);
+    transform: translateY(-6px) scale(1.01);
+}
+
+.kortti-kuva {
+    width: 100%;
+    height: 340px; /* TYÖPÖYTÄKOKO: Kuva on iso ja pääosassa (340px) */
+    object-fit: cover; /* Säilyttää kuvasuhteen ja estää venymisen */
+    border-bottom: 1px solid var(--reunavari);
+    transition: border-color 0.3s ease;
+}
+
+.kortti-sisalto {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Täyttää jäljelle jäävän osion kortista siististi */
+    gap: 8px;
+}
+
+.ravintola-nimi {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.mainos-otsikko {
+    font-size: 1.3rem;
+    margin: 5px 0;
+}
+
+/* Etsi tämä kohta style.css-tiedostosta ja korvaa se kokonaan: */
+.mainos-kuvaus {
+    font-size: 1.0rem;       
+    line-height: 1.5;         
+    color: var(--korttiteksti); 
+    margin-bottom: 15px;
+    flex-grow: 1;
+    transition: color 0.3s ease;
+
+    /* LISÄTTY RIVIRAJOITUS (Line-Clamping) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;           /* Pakottaa tekstin katkeamaan tasan 3 rivin jälkeen */
+    -webkit-box-orient: vertical;  
+    overflow: hidden;                /* Piilottaa ylimääräisen tekstin */
+    text-overflow: ellipsis;         /* Lisää automaattisesti kolme pistettä (...) loppuun */
+}
+
+
+
+.kortti-ala {
+    border-top: 1px solid var(--reunavari);
+    padding-top: 15px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease;
+}
+
+.tagi {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 4px;
+    color: #ffffff;
+}
+
+.tagi-lounas { background-color: var(--lounas-vari); }
+.tagi-tapahtuma { background-color: var(--tapahtuma-vari); }
+.tagi-etu { background-color: var(--etu-vari); }
+
+.poisto-nappi {
+    background-color: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    align-self: flex-start;
+    transition: all 0.2s ease;
+}
+
+.poisto-nappi:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* ==========================================================================
+   6. RAVINTOLAPANEELIN JA LOMAKKEEN TYYLIT
+   ========================================================================== */
+.paneeli-kontti {
+    background-color: var(--korttitausta);
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s ease;
+}
+
+:root[data-theme="dark"] .paneeli-kontti {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.paneeli-kontti h2 {
+    color: var(--paavari);
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.paneeli-kontti p {
+    color: #6c757d;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+}
+
+.lomake-ryhma {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.lomake-ryhma label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.lomake-ryhma input[type="text"],
+.lomake-ryhma input[type="password"],
+.lomake-ryhma input[type="file"],
+.lomake-ryhma select,
+.lomake-ryhma textarea {
+    padding: 10px;
+    border: 1px solid var(--reunavari);
+    background-color: var(--taustavari);
+    color: var(--tekstivari);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.lomake-ryhma textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.lomake-rivi {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.lomake-rivi label {
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.julkaise-nappi {
+    background-color: var(--paavari);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.julkaise-nappi:hover {
+    background-color: #0b5ed7;
+}
+
+/* ==========================================================================
+   7. RESPONSIIVINEN SKAALAUS (MEDIA QUERYTS)
+   ========================================================================== */
+
+/* MOBIILILAITTEET (Max 600px leveät näytöt, esim. älypuhelimet) */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .header-kuvaus {
+        display: none; /* Piilotetaan esittelyteksti tilan säästämiseksi puhelimella */
+    }
+
+    .ylapalkki {
+        margin-bottom: 15px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+
+    header {
+        margin-bottom: 5px;
+        padding: 5px 0;
+}
+header h1 {
+font-size: 1.6rem;
+}
+.suodatin-alue {
+gap: 6px;
+margin-bottom: 5px;
+}
+.suodatin-nappi {
+padding: 8px 14px;
+font-size: 0.85rem;
+flex-grow: 1;
+text-align: center;
+}
+.mainos-grid {
+grid-template-columns: 1fr;
+gap: 20px;
+}
+/* KORJATTU MOBIILIKORTTI /
+.kortti {
+min-height: 490px; / Tiivistetty kokonaispituus mobiilissa */
+}
+/* KORJATTU MOBIILIKUVA: Kuva pysyy reilun kokoisena (280px) eikä romahda */
+.kortti-kuva {
+height: 280px;
+}
+.kortti-sisalto {
+padding: 20px;
+}
+.mainos-otsikko {
+font-size: 1.15rem;
+}
+.paneeli-kontti {
+padding: 20px;
+margin: 10px auto;
+}
+
+/* TABLETIT (Näytöt väliltä 601px - 900px, esim. iPadit) */
+@media screen and (min-width: 601px) and (max-width: 900px) {
+header h1 {
+font-size: 2.2rem;
+}
+.mainos-grid {
+grid-template-columns: repeat(2, 1fr); /* Kaksi saraketta rinnakkain tabletilla */
+gap: 25px;
+}
+.kortti {
+min-height: 540px;
+}
+.kortti-kuva {
+height: 300px; /* Välikoko tablet-näytölle */
+}
+}
+
+/* Tyylikäs linkkipainike kortin sisälle */
+.kotisivu-linkki {
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid var(--paavari);
+    color: var(--paavari);
+    text-decoration: none;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: auto; /* Työntää painikkeen siististi kuvaustekstin alle vapaaseen tilaan */
+    transition: all 0.2s ease;
+}
+
+.kotisivu-linkki:hover {
+    background-color: var(--paavari);
+    color: #ffffff;
+}
+
+/* Tumman teeman hover-hienosäätö tekstivärille */
+:root[data-theme="dark"] .kotisivu-linkki:hover {
+    color: #121212;
+}
